@@ -54,14 +54,26 @@ new Chart(ctx, {
     }
 });
 
-// Sidebar collapse toggle (optional bonus)
+// Sidebar collapse toggle 
 const sidebar = document.querySelector('.sidebar');
-const sidebarLinks = document.querySelectorAll('.sidebar ul li a');
+const toggleSidebar = () => {
+    if (window.innerWidth <= 768) {
+        sidebar.style.width = '60px'; 
+        document.querySelectorAll('.sidebar ul li a').forEach(link => {
+            link.style.fontSize = '0'; 
+            link.querySelector('i').style.fontSize = '20px'; 
+        });
+        document.querySelector('.main').style.marginLeft = '60px'; 
+    } else {
+        sidebar.style.width = '240px'; 
+        document.querySelectorAll('.sidebar ul li a').forEach(link => {
+            link.style.fontSize = '';
+            link.querySelector('i').style.fontSize = ''; 
+        });
+        document.querySelector('.main').style.marginLeft = '240px'; 
+    }
+};
 
-sidebar.style.width = '70px';
-document.querySelector('.main').style.marginLeft = '70px';
+window.addEventListener('resize', toggleSidebar);
 
-sidebarLinks.forEach(link => {
-    link.querySelector('div').style.display = 'none';
-    link.style.justifyContent = 'center';
-});
+toggleSidebar();

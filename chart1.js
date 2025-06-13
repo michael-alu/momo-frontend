@@ -5,24 +5,27 @@ const transactionAmounts = [1200, 850, 1050, 780, 250, 310, 590, 720, 940, 100];
 
 // the chart
 const myChart = new Chart('myChart', {
-    type: 'bar',
+    type: 'line',
     data:{
         labels: transactions,
         datasets: [{
             label: 'Transaction Volume',
             backgroundColor: 'rgb(20, 74, 108)',
-            data: transactionVolumes
+            data: transactionVolumes,
+            fill: false 
         },
         {
             label: 'Transaction Amount(in thousands)',
             backgroundColor: 'rgb(251, 206, 0)',
-            data: transactionAmounts
+            data: transactionAmounts,
+            fill: false
         }]
     },
     options: {
+        responsive: true, 
         datasets:{
-            bar: {
-                borderRadius: 1
+            line: {
+                tension: 0.3
             }
         }
     }
