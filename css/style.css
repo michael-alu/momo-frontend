@@ -30,9 +30,9 @@ body {
     gap: 12px;
 }
 
-.logo h2 {
+.logo h1 {
     color: #fff;
-    font-size: 1.4rem;
+    /* font-size: 1.4rem; */
 }
 
 .logo-img {
@@ -152,7 +152,7 @@ body {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .card {
@@ -214,4 +214,35 @@ body {
 .footer a {
     color: #ffcc00;
     text-decoration: none;
+}
+
+/* table */
+.table-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 24px 24px 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-collapse: collapse;
+
+}
+tr:hover {
+    background-color:#5cb3e6;
+    color: rgb(34, 34, 34);
+}
+.table-container h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: #616161;
+
+}
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-container th, .table-container td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
