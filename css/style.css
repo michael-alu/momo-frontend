@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #f4f6f9;
+    background-color: #075877;
     color: #333;
 }
 
@@ -176,8 +176,9 @@ body {
 }
 
 #myChart {
-    width: 100%;
-    height: 300px;
+    width: 80%;
+    height: 80px;
+    margin: 0 auto;
 }
 
 .footer {
@@ -228,4 +229,67 @@ tr:hover {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px; 
+    }
+
+    .sidebar ul li a {
+        justify-content: center; 
+        font-size: 0px; 
+    }
+    .sidebar ul li a i {
+        font-size: 20px; 
+    }
+    .sidebar ul li a:hover{
+        background: #edeeee;
+    }
+
+    .main {
+        margin-left: 60px; 
+        padding: 20px;  
+        /* width: calc(100% - 60px); */
+    }
+
+    .cards {
+        flex-direction: column; 
+        gap: 10px; 
+    }
+
+    #myChart {
+        width: 100%; 
+        height: 200px; 
+    }
+
+    .topbar {
+        flex-direction: column; 
+        height: auto; 
+        padding: 10px; 
+    }
+
+    .search {
+        margin: 10px 0; 
+    }
+
+    .topbar {
+        flex-direction: column; 
+        height: auto; 
+        padding: 10px; 
+    }
+
+    .search {
+        margin: 10px 0; 
+    }
+
+    .cards {
+        flex-direction: column; 
+        gap: 10px; 
+    }
+    #myChart {
+        width: 100%; 
+        height: 100px; 
+    }
 }
