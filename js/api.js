@@ -83,8 +83,10 @@ const getTransactions = async ({ type = "", take = 10, page = 1 }) => {
       "beforeend",
       transactions
         .map(
-          transaction => `
-                        <tr>
+          (transaction, index) => `
+                        <tr onclick="showTransactionDetails(${index})" data-transaction='${JSON.stringify(
+            transaction
+          )}'>
                             <td>${new Date(
                               transaction?.sms_date || new Date().getTime()
                             ).toDateString()}</td>
@@ -271,3 +273,34 @@ document.addEventListener("DOMContentLoaded", () => {
 getStatistics();
 getTransactions({ take: 10, page: 1 });
 getAnalysis({ days: 30 });
+
+// Modal functions
+function showTransactionDetails(index) {
+  const row = document.querySelector(
+    `.transaction-table-body tr:nth-child(${index + 1})`
+  );
+  const transaction = JSON.parse(row.getAttribute("data-transaction"));
+
+  // Fill modal with transaction details
+  document.getElementById("modalDate").textContent = new Date(
+    transaction?.sms_date || new Date().getTime()
+  ).toDateString();
+  document.getElementById("modalSender").textContent =
+    transaction?.sender || "-";
+  document.getElementById("modalReceiver").textContent =
+    transaction?.receiver || "-";
+  document.getElementById("modalAmount").textContent = toCurrency(
+    transaction?.amount || 0
+  );
+  document.getElementById("modalBalance").textContent = toCurrency(
+    transaction?.balance || 0
+  );
+
+  // Show modal
+  document.getElementById("transactionModal").style.display = "block";
+}
+
+// Close modal when clicking the X
+document.querySelector(".close-modal").onclick = function () {
+  document.getElementById("transactionModal").style.display = "none";
+};
