@@ -15,11 +15,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <div class="container"></div>
+
+    <!-- top bar -->
+
     <div class="topbar">
         <div class="logo">
             <img src="images/logo.png" alt="logo" class="logo-img" />
-            <h2>MTN MOMO</h2>
+            <h1>MTN MOMO</h1>
         </div>
         <!-- <div class="search">
             <input type="text" id="search" placeholder="Enter a keyword to search...">
@@ -30,6 +32,9 @@
             <img src="images/user.png" alt="">
         </div> -->
     </div>
+
+    <!-- sidebar -->
+
     <div class="sidebar">
         <ul>
             <li>
@@ -41,66 +46,69 @@
             <li>
                 <a href="#">
                     <i class="fa-solid fa-coins"></i>
-                    <div>Incoming Money</div>
+                    <div>Incoming money</div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="fa-solid fa-code"></i>
-                    <div>Payments to Code Holders</div>
+                    <div>Payments to code holders</div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="fa-solid fa-mobile-screen"></i>
-                    <div>Mobile No transfers</div>
+                    <div>Mobile no transfers</div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="fa-solid fa-building-columns"></i>
-                    <div>Bank Deposits</div>
+                    <div>Bank deposits</div>
                 </a>
             </li>
             
             <li>
                 <a href="#">
                     <i class="fa-solid fa-phone"></i>
-                    <div>Airtime bill Payment</div>
+                    <div>Airtime bill payment</div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="fa-solid fa-receipt"></i>
-                    <div>Cash Power Bill Payments</div>
+                    <div>Cash power bill payments</div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="fa-solid fa-users-line"></i>
-                    <div>Third-party Transactions</div>
+                    <div>Third-party transactions</div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="fa-solid fa-hand-holding-dollar"></i>
-                    <div>Withdraws from Agents</div>
+                    <div>Withdraws from agents</div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="fas fa-exchange-alt"></i>
-                    <div>Bank Transfers</div>
+                    <div>Bank transfers</div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="fa-solid fa-globe"></i>
-                    <div>Internet & Voice Bundles</div>
+                    <div>Internet/Voice Bundles</div>
                 </a>
             </li>
         </ul>
     </div>
+
+    <!-- The 3 cards -->
+
     <div class="main">
         <div class="cards">
             <div class="card">
@@ -116,14 +124,59 @@
                 <div class="card-value"><span class="card-currency">RWF</span> 33,400</div>
             </div>
             </div>
+
+
+            <!-- The table section -->
+
+            <div class="table-container">
+                <h2 class="table-title">Transaction Details</h2>
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Receiver Name</th>
+                            <th>Amount (RWF)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2023-10-01</td>
+                            <td>TX123456</td>
+                            <td>50,000</td>
+                            <td>Completed</td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-02</td>
+                            <td>TX123457</td>
+                            <td>30,000</td>
+                            <td>Pending</td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-03</td>
+                            <td>TX123458</td>
+                            <td>70,000</td>
+                            <td>Completed</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- The chart section -->
             <div class="chart-section">
                 <div class="chart">
                 <h2 class="chart-title">Transaction Analysis</h2>
                 <canvas id="myChart"></canvas>
                 </div>
             </div>
+
+            <!-- chat ends -->
+
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
     <script src="chart1.js"></script>
  
