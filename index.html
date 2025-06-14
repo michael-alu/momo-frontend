@@ -167,9 +167,25 @@
                             <th>Balance</th>
                         </tr>
                     </thead>
-                    <tbody class="transaction-table-body" >
+                    <tbody class="transaction-table-body">
                     </tbody>
                 </table>
+
+                <!-- Transaction Modal -->
+                <div id="transactionModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+                        <h2>Transaction Details</h2>
+                        <div class="transaction-details">
+                            <p><strong>Date:</strong> <span id="modalDate"></span></p>
+                            <p><strong>Sender:</strong> <span id="modalSender"></span></p>
+                            <p><strong>Receiver:</strong> <span id="modalReceiver"></span></p>
+                            <p><strong>Amount:</strong> <span id="modalAmount"></span></p>
+                            <p><strong>Balance:</strong> <span id="modalBalance"></span></p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="pagination">
                     <button onclick="prevPage()">Previous</button>
                     <span id="pageInfo">Page 1</span> - <span id="pageShowcase" >Showing Pages 1 of 1</span>
