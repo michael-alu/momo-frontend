@@ -4,7 +4,7 @@
  * This module handles all API interactions for the MTN MOMO dashboard.
  * It manages transaction data fetching, statistics, and analysis visualization.
  *
- * @author MTN MOMO Team (Group 7) - Enterprise Web Development May 2025 
+ * @author MTN MOMO Team (Group 7) - Enterprise Web Development May 2025
  * @version 1.0.0
  */
 
@@ -226,7 +226,7 @@ const getAnalysis = async ({ type = "", days = 30 }) => {
     });
   } catch (error) {
     console.error("Error fetching chart data:", error);
-    alert("Error loading chart data. Please try again.");
+    // alert("Error loading chart data. Please try again.");
   }
 };
 
@@ -307,19 +307,24 @@ function showTransactionDetails(index) {
   const row = document.querySelector(
     `.transaction-table-body tr:nth-child(${index + 1})`
   );
+
   const transaction = JSON.parse(row.getAttribute("data-transaction"));
 
   // Fill modal with transaction details
   document.getElementById("modalDate").textContent = new Date(
     transaction?.sms_date || new Date().getTime()
   ).toDateString();
+
   document.getElementById("modalSender").textContent =
     transaction?.sender || "-";
+
   document.getElementById("modalReceiver").textContent =
     transaction?.receiver || "-";
+
   document.getElementById("modalAmount").textContent = toCurrency(
     transaction?.amount || 0
   );
+
   document.getElementById("modalBalance").textContent = toCurrency(
     transaction?.balance || 0
   );
@@ -328,10 +333,68 @@ function showTransactionDetails(index) {
   document.getElementById("transactionModal").style.display = "block";
 }
 
+/**
+ * Initializes the application after API health check
+ */
+function initializeApp() {
+  const type = getTypeFromURL();
+
+  setTransactionType(type || ""); // Initialize with URL parameter or default to dashboard
+
+  getStatistics();
+
+  getTransactions({ take: 10, page: 1 });
+
+  getAnalysis({ days: 30 });
+}
+
+/**
+ * Checks API health and initializes the application. Doing this because our small backend is hosted on a free-tier
+ */
+async function checkApiHealth() {
+  const loadingState = document.getElementById("apiLoadingState");
+
+  const apiStatus = document.getElementById("apiStatus");
+
+  try {
+    const response = await fetch(API_URL);
+
+    const data = await response.text();
+
+    if (data) {
+      apiStatus.textContent = "API is up and running!";
+
+      apiStatus.style.color = "green";
+
+      // Hide loading state after a short delay
+      setTimeout(() => {
+        loadingState.style.display = "none";
+        // Initialize application
+        initializeApp();
+      }, 1000);
+    } else {
+      throw new Error(data.message || "API check failed");
+    }
+  } catch (error) {
+    console.error("API Health Check Failed:", error);
+    apiStatus.textContent =
+      "API is currently unavailable. Please try again later.";
+
+    apiStatus.style.color = "red";
+
+    // Retry after 5 seconds
+    setTimeout(checkApiHealth, 5000);
+  }
+}
+
 // Event Listeners
 document.addEventListener("DOMContentLoaded", () => {
   const type = getTypeFromURL();
+
   setTransactionType(type || ""); // Initialize with URL parameter or default to dashboard
+
+  // Start API health check when DOM content has fully loaded
+  checkApiHealth();
 });
 
 document.querySelector(".close-modal").onclick = function () {
