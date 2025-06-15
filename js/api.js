@@ -1,10 +1,27 @@
-const API_URL = "https://momo-backend-eu5x.onrender.com";
-// const API_URL = "http://localhost:4000";
+/**
+ * MTN MOMO Frontend API Integration
+ *
+ * This module handles all API interactions for the MTN MOMO dashboard.
+ * It manages transaction data fetching, statistics, and analysis visualization.
+ *
+ * @author MTN MOMO Team (Group 7) - Enterprise Web Development May 2025 
+ * @version 1.0.0
+ */
 
-// Global transaction type
+// API Configuration
+const API_URL = "https://momo-backend-eu5x.onrender.com";
+// const API_URL = "http://localhost:4000"; // Development environment
+
+/**
+ * Global state management
+ * @type {string} currentTransactionType - Currently selected transaction type filter
+ */
 let currentTransactionType = "";
 
-// Function to update URL with transaction type
+/**
+ * Updates the URL with the current transaction type for bookmarking and sharing
+ * @param {string} type - Transaction type to set in URL
+ */
 function updateURL(type) {
   const url = new URL(window.location.href);
   if (type) {
@@ -15,20 +32,23 @@ function updateURL(type) {
   window.history.pushState({}, "", url);
 }
 
-// Function to get transaction type from URL
+/**
+ * Retrieves transaction type from URL parameters
+ * @returns {string} Transaction type from URL or empty string
+ */
 function getTypeFromURL() {
   const url = new URL(window.location.href);
   return url.searchParams.get("type") || "";
 }
 
-/*
-================== API CALLS =========================
-*/
-
-// Get Statistics
+/**
+ * Fetches and updates dashboard statistics
+ * Updates total count, total amount, and average transaction amount
+ */
 const getStatistics = async () => {
   try {
     const params = new URLSearchParams({ type: currentTransactionType });
+
     const response = await fetch(`${API_URL}/statistics?${params.toString()}`);
 
     const data = await response.json();
@@ -37,6 +57,7 @@ const getStatistics = async () => {
       return alert(data.message);
     }
 
+    // Update UI elements with statistics
     const totalCountElement = document.querySelector(".total-count");
     const totalAmountElement = document.querySelector(".total-amount");
     const averageAmountElement = document.querySelector(".average-amount");
@@ -51,7 +72,13 @@ const getStatistics = async () => {
   }
 };
 
-// Get Transactions
+/**
+ * Fetches and displays transaction data with pagination
+ * @param {Object} options - Query parameters
+ * @param {string} options.type - Transaction type filter
+ * @param {number} options.take - Number of records per page
+ * @param {number} options.page - Current page number
+ */
 const getTransactions = async ({ type = "", take = 10, page = 1 }) => {
   try {
     // Use the global type if no specific type is provided
@@ -84,25 +111,24 @@ const getTransactions = async ({ type = "", take = 10, page = 1 }) => {
       transactions
         .map(
           (transaction, index) => `
-                        <tr onclick="showTransactionDetails(${index})" data-transaction='${JSON.stringify(
+            <tr onclick="showTransactionDetails(${index})" data-transaction='${JSON.stringify(
             transaction
           )}'>
-                            <td>${new Date(
-                              transaction?.sms_date || new Date().getTime()
-                            ).toDateString()}</td>
-                            <td>${transaction?.sender || "-"}</td>
-                            <td>${transaction?.receiver || "-"}</td>
-                            <td>${toCurrency(transaction?.amount || 0)}</td>
-                            <td>${toCurrency(transaction?.balance || 0)}</td>
-                        </tr>
-        `
+              <td>${new Date(
+                transaction?.sms_date || new Date().getTime()
+              ).toDateString()}</td>
+              <td>${transaction?.sender || "-"}</td>
+              <td>${transaction?.receiver || "-"}</td>
+              <td>${toCurrency(transaction?.amount || 0)}</td>
+              <td>${toCurrency(transaction?.balance || 0)}</td>
+            </tr>
+          `
         )
         .join("")
     );
 
+    // Update pagination state
     totalPages = data?.data?.totalPages;
-
-    // Update page info
     document.getElementById("pageInfo").textContent = `Page ${page}`;
 
     document.getElementById(
@@ -111,7 +137,7 @@ const getTransactions = async ({ type = "", take = 10, page = 1 }) => {
       data?.data?.totalPages || page
     }`;
 
-    // Update dropdown to match current type
+    // Sync dropdown with current type
     const typeSelect = document.getElementById("typeSelect");
     if (typeSelect) {
       typeSelect.value = transactionType;
@@ -121,7 +147,13 @@ const getTransactions = async ({ type = "", take = 10, page = 1 }) => {
   }
 };
 
-// Get Analysis
+/**
+ * Fetches and visualizes transaction analysis data
+ * Creates a line chart showing transaction trends
+ * @param {Object} options - Query parameters
+ * @param {string} options.type - Transaction type filter
+ * @param {number} options.days - Number of days to analyze
+ */
 const getAnalysis = async ({ type = "", days = 30 }) => {
   try {
     // Use the global type if no specific type is provided
@@ -147,7 +179,7 @@ const getAnalysis = async ({ type = "", days = 30 }) => {
 
     // Handle data based on whether we have a specific type or not
     if (transactionType) {
-      // Single type analysis
+      // Single transaction type analysis
       labels = data?.data?.data?.map(info => info?.date) || [];
       datasets = [
         {
@@ -159,7 +191,7 @@ const getAnalysis = async ({ type = "", days = 30 }) => {
         },
       ];
     } else {
-      // Dashboard view - show incoming vs outgoing
+      // Dashboard view - compare incoming vs outgoing
       labels = data?.data?.data?.incoming?.map(info => info?.date) || [];
       datasets = [
         {
@@ -179,13 +211,10 @@ const getAnalysis = async ({ type = "", days = 30 }) => {
       ];
     }
 
-    // Create the chart with improved options
+    // Initialize chart with configuration
     new Chart("myChart", {
       type: "line",
-      data: {
-        labels,
-        datasets,
-      },
+      data: { labels, datasets },
       options: {
         responsive: true,
         datasets: {
@@ -201,19 +230,26 @@ const getAnalysis = async ({ type = "", days = 30 }) => {
   }
 };
 
-// Simple variables for pagination
+/**
+ * Pagination state management
+ */
 let currentPage = 1;
 let totalPages = 1;
 
-// Filter by type
+/**
+ * Filters transactions by type and resets pagination
+ * @param {string} type - Transaction type to filter by
+ */
 function filterByType(type) {
   currentTransactionType = type; // Update global type
   currentPage = 1; // Reset to first page when filtering
   getTransactions({ type, take: 10, page: currentPage });
-  getStatistics(); // Update statistics with new type
+  getStatistics();
 }
 
-// Pagination functions
+/**
+ * Handles pagination navigation
+ */
 function prevPage() {
   if (currentPage > 1) {
     currentPage--;
@@ -230,7 +266,10 @@ function nextPage() {
   getTransactions({ take: 10, page: currentPage });
 }
 
-// Function to handle sidebar clicks
+/**
+ * Sets the current transaction type and updates all related views
+ * @param {string} type - Transaction type to set
+ */
 function setTransactionType(type) {
   currentTransactionType = type;
   currentPage = 1;
@@ -260,16 +299,46 @@ function setTransactionType(type) {
   }
 }
 
-// Initialize with URL parameter
+/**
+ * Modal functionality for transaction details
+ * @param {number} index - Index of the transaction in the current view
+ */
+function showTransactionDetails(index) {
+  const row = document.querySelector(
+    `.transaction-table-body tr:nth-child(${index + 1})`
+  );
+  const transaction = JSON.parse(row.getAttribute("data-transaction"));
+
+  // Fill modal with transaction details
+  document.getElementById("modalDate").textContent = new Date(
+    transaction?.sms_date || new Date().getTime()
+  ).toDateString();
+  document.getElementById("modalSender").textContent =
+    transaction?.sender || "-";
+  document.getElementById("modalReceiver").textContent =
+    transaction?.receiver || "-";
+  document.getElementById("modalAmount").textContent = toCurrency(
+    transaction?.amount || 0
+  );
+  document.getElementById("modalBalance").textContent = toCurrency(
+    transaction?.balance || 0
+  );
+
+  // Show modal
+  document.getElementById("transactionModal").style.display = "block";
+}
+
+// Event Listeners
 document.addEventListener("DOMContentLoaded", () => {
   const type = getTypeFromURL();
-  if (type) {
-    setTransactionType(type);
-  } else {
-    setTransactionType(""); // Dashboard view
-  }
+  setTransactionType(type || ""); // Initialize with URL parameter or default to dashboard
 });
 
+document.querySelector(".close-modal").onclick = function () {
+  document.getElementById("transactionModal").style.display = "none";
+};
+
+// Initial data load
 getStatistics();
 getTransactions({ take: 10, page: 1 });
 getAnalysis({ days: 30 });
