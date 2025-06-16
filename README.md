@@ -2,6 +2,9 @@
 
 A dashboard that shows MTN Mobile Money transactions. Made for our Summative Assignment.
 
+## Walkthrough Video
+- https://www.loom.com/share/eef471ec8f6a454c82188f0fd62893c7?sid=1c6b2e99-9a35-47cb-9b4d-e38a98c225d0
+
 ## What This Project Does
 
 This dashboard helps you see:
